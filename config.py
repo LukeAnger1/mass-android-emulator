@@ -3,3 +3,4 @@
 sdkmanager = "./cmdline-tools/latest/bin/sdkmanager"
 avdmanager = "./cmdline-tools/latest/bin/avdmanager"
 adb = "./platform-tools/adb"
+emulator = "./emulator/emulator"

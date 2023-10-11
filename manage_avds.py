@@ -1,6 +1,7 @@
 import subprocess
 import config
 import re
+import platform
 
 def list_known_devices():
     try:
@@ -73,7 +74,40 @@ def remove_virtual_device(avd_name):
     except Exception as e:
         print(f"An error occurred: {str(e)}")
 
-def install_apk(avd_name, apk_path):
+def start_emulator(avd_name):
+    # TODO: this might actually be id
+    # TODO also has to run in parallel to get the apk install to work
+    # TODO: add a headless emulator option
+    try:
+        # TODO: this is untested for windows
+        if platform.system() == 'Windows':
+            # TODO: this is using a different file, keep as this but may need to switch to use the config later
+            emulator_command = 'emulator.exe'
+        else:
+            emulator_command = config.emulator
+
+        # Replace 'avd_name' with the name of the AVD you want to start
+        emulator_command = f'{emulator_command} -avd {avd_name}'
+
+        # Run the emulator command using subprocess
+        process = subprocess.Popen(emulator_command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        out, err = process.communicate()
+
+        if process.returncode == 0:
+            print(f'Emulator {avd_name} started successfully')
+        else:
+            print(f'Failed to start emulator {avd_name}')
+            print(f'Error message: {err.decode("utf-8")}')
+
+    except Exception as e:
+        print(f'An error occurred: {str(e)}')
+
+def install_apk(avd_name, apk_path, started = False):
+    # this is the case when the emulator hasnt been started yet
+    if not started:
+        # TODO: get this line to run in parallel, the apk wont install until this is closed defeating the purpose
+        start_emulator(avd_name)
+
     try:
         # Use adb to install the APK on the specified AVD by name
         adb_install_command = [config.adb, '-s', f'emulator-{avd_name}', 'install', '-r', apk_path]
@@ -88,9 +122,10 @@ def install_apk(avd_name, apk_path):
     
     except Exception as e:
         print(f"An error occurred: {str(e)}")
+
 if __name__ == '__main__':
     # Example usage
     list_known_devices()
-    create_virtual_device()
     print(list_known_devices())
-    install_apk('3', 'CSC GO Laundry_1.17.0_Apkpure.apk')
+    # start_emulator('3')
+    install_apk('5554', 'CSC GO Laundry_1.17.0_Apkpure.apk', started = True)

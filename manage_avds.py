@@ -74,7 +74,7 @@ def remove_virtual_device(avd_name):
     except Exception as e:
         print(f"An error occurred: {str(e)}")
 
-def start_emulator(avd_name):
+def start_emulator(avd_name, headless = False):
     # TODO: this might actually be id
     # TODO also has to run in parallel to get the apk install to work
     # TODO: add a headless emulator option
@@ -88,6 +88,10 @@ def start_emulator(avd_name):
 
         # Replace 'avd_name' with the name of the AVD you want to start
         emulator_command = f'{emulator_command} -avd {avd_name}'
+
+        # this will add the window if needed, mainly for testing
+        if headless:
+            emulator_command += ' -no-window'
 
         # Run the emulator command using subprocess
         process = subprocess.Popen(emulator_command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
@@ -106,7 +110,7 @@ def install_apk(avd_name, apk_path, started = False):
     # this is the case when the emulator hasnt been started yet
     if not started:
         # TODO: get this line to run in parallel, the apk wont install until this is closed defeating the purpose
-        start_emulator(avd_name)
+        start_emulator(avd_name, headless=True)
 
     try:
         # Use adb to install the APK on the specified AVD by name
@@ -127,5 +131,6 @@ if __name__ == '__main__':
     # Example usage
     list_known_devices()
     print(list_known_devices())
-    # start_emulator('3')
-    install_apk('5554', 'CSC GO Laundry_1.17.0_Apkpure.apk', started = True)
+    print('made it here 2')
+    start_emulator('3', headless=True)
+    print(f'made it here')

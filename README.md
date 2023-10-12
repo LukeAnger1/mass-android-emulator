@@ -37,4 +37,6 @@ In the command-line tools bin folder there is an sdkmanager and avdmanager
 ./avdmanager create avd -n test -k "system-images;android-30;default;x86_64"
 
 # in platform-tools this will record device input
-./adb shell getevent -t > input_events.txt
+./adb -s 'emulator-5554' shell getevent -t > input_events.txt
+# TODO: convert the file to actually be able to run
+./adb -s 'emulator-5554' shell < input_script.txt

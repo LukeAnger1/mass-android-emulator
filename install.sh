@@ -1,3 +1,5 @@
+#!/bin/bash
+# This installation script is intended to be run on a Linux machine.
 # NOTE: may need to run with sudo privelege
 
 echo "starting the installation"

@@ -1,8 +1,11 @@
+# NOTE: may need to run with sudo privelege
+
 echo "starting the installation"
 
 echo "updating system and installing dependencies through apt"
 apt update
 apt upgrade -y
+apt install unzip -y
 apt install openjdk-17-jdk wget unzip -y
 
 echo "getting the main package"

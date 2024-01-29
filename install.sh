@@ -7,7 +7,6 @@ echo "Starting the installation"
 echo "Updating system and installing dependencies through apt"
 apt update
 apt upgrade -y
-apt install unzip -y
 apt install openjdk-17-jdk wget unzip -y
 
 echo "Getting the main package"

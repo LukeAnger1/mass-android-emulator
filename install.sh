@@ -1,13 +1,20 @@
 #!/bin/bash
 # This installation script is intended to be run on a Linux machine.
-# NOTE: You may need to run this script with sudo privileges.
+# Run with ./install.sh
 
 echo "Starting the installation"
 
 echo "Updating system and installing dependencies through apt"
-apt update
-apt upgrade -y
-apt install openjdk-17-jdk wget unzip -y
+sudo apt update
+sudo apt upgrade -y
+sudo apt install openjdk-17-jdk wget unzip -y
+
+# IMPORTANT: Do not have conflicting versions of java
+echo "Getting the right version of java"
+
+# Set JAVA_HOME environment variable
+echo "export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64" >> ~/.bashrc
+echo "export PATH=\$JAVA_HOME/bin:\$PATH" >> ~/.bashrc
 
 echo "Getting the main package"
 wget https://dl.google.com/android/repository/commandlinetools-linux-10406996_latest.zip
@@ -35,10 +42,10 @@ mkdir -p "$SDK_DIR/latest"
 mv ./* "$SDK_DIR/latest"
 
 # Navigate to the newly created "latest" directory
-cd "$SDK_DIR/latest"
+cd "$SDK_DIR/latest/bin"
 
 # Now install the required SDK packages using sdkmanager
-./bin/sdkmanager --install "platform-tools"
-./bin/sdkmanager --install "emulator"
+./sdkmanager --install "platform-tools"
+./sdkmanager --install "emulator"
 
-echo "Installation completed. Please run 'source ~/.bashrc' or start a new terminal session to apply changes."
+echo "Installation completed."
